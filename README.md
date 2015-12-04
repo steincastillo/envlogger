@@ -1,2 +1,2 @@
 # envlogger
-Log environment variables using the raspberry pu sense hat
+Log environment variables using the raspberry pi sense hat
