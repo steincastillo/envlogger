@@ -6,7 +6,7 @@
 #----------------------
 
 import os
-os.chdir("/home/pi/stein/projects/python")  #set the working directory
+#os.chdir("/home/pi/stein/projects/python")  #set the working directory
 
 #this function is used to convert temperature readings Celsius<->Farenheit
 def tconv (celsius=0, farenheit=0):
@@ -66,6 +66,9 @@ if not(os.path.isfile(name)):
     print ("Files does not exist... cancelling.")
     exit(0)
 
+dump = input("Log file screen dump [y/n]:")
+dump = str.capitalize(dump)
+
 
 #initialize variables
 #(t)emperature, (p)ressure, (h)humidity    
@@ -95,6 +98,8 @@ hsample = float(header[2])
 #main loop
 for line in logfile:
     logline = line.strip()
+    if dump == "Y":
+        print (logline)
     logline = logline.split(",")  #convert the read line to a list using "," as separator
     d = logline[0]              #extract the date
     t = float(logline[1])       #extract the temperature
