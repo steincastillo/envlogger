@@ -49,6 +49,20 @@ def pconv (mb = 0, kpa = 0):
 def computeHeight(pressure):
     return 44330.8 * (1 - pow(pressure / 1013.25, 0.190263))
 
+#initialize variables
+#(t)emperature, (p)ressure, (h)humidity    
+tmin = 100
+pmin = 1000
+hmin = 100
+#-
+tmax = 0
+pmax = 0
+hmax = 0
+#-
+tsum = 0
+psum = 0
+hsum = 0
+index = 0
 
 print("\n")
 print("*****************************************")
@@ -70,26 +84,13 @@ dump = input("Log file screen dump [y/n]:")
 dump = str.capitalize(dump)
 
 
-#initialize variables
-#(t)emperature, (p)ressure, (h)humidity    
-tmin = 100
-pmin = 1000
-hmin = 100
 
-tmax = 0
-pmax = 0
-hmax = 0
-
-tsum = 0
-psum = 0
-hsum = 0
-index = 0
-
-logfile = open(name, "r")       #open the log file, read only
+#open log file, read only
+logfile = open(name, "r")
 
 print ("Analysing flile...")
 
-#read file headers
+#read file header
 header = logfile.readline()
 header = header.split(",")
 hsample = float(header[2])
