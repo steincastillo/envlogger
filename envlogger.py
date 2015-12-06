@@ -88,6 +88,8 @@ samples = int(input("Enter number of samples:"))
 t = round(sense.get_temperature_from_humidity(),1)            
 p = round(sense.get_pressure(),1)                              
 h = round(sense.get_humidity(),1)
+time.sleep(5)
+
 
 #these variables will be used to calculate the averages/max/min at the end of the sampling
 tt = float(0)
@@ -129,13 +131,20 @@ for i in range(samples):
     pmin = min(pmin, p)
     hmax = max(hmax, h)
     hmin = min(hmin, h)
+    #determine color for progress display
+    if t <= 15:
+        tcolor = v
+    elif (t>15) and (t<=21):
+        tcolor = g
+    else:
+        tcolor = r
     #create the log line for the file
     t = str(t)
     p = str(p)
     h = str(h)
     logline = timestamp+","+t+","+p+","+h+"\n"
     progress = int((i/float(samples)*10))
-    sense.show_letter(str(progress))
+    sense.show_letter(str(progress), text_colour=tcolor)
     sensefile.write(logline)
     print (repr(i).rjust(3), t.rjust(11), p.rjust(10), h.rjust(7), timestamp[10:19].rjust(10))
     time.sleep(rate)
