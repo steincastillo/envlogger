@@ -1,9 +1,5 @@
 # Envlogger
 
-
-ATTENTION!!!
-file completion in progress... 
-
 ---- Short Description:
 Read temperature, barometric pressure and humidity from the raspberry pi sense hat and log the results in a text file
 
