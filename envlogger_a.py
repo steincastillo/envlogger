@@ -38,16 +38,18 @@ if os.path.isfile("sensefile.dat"):
     exit(0)
 
 #set the samples and sampling rate
-rate = 120              #sample frecuency in seconds
-samples = 600          #number of samples
-stabilization = True
+rate = 1              #sample frecuency in seconds
+samples = 10          #number of samples
+stabilization = False
 
 #initialization read from the sensor. This is neccesary since sometimes the sensors return
 #a 0 value for pressure on the first read
 t = round(sense.get_temperature_from_humidity(),1)            
 p = round(sense.get_pressure(),1)                              
 h = round(sense.get_humidity(),1)
+sense.show_letter("W")
 time.sleep(5)
+sense.clear()
 
 #stabilize temperature readings by waiting 5 min
 if stabilization:
@@ -72,13 +74,20 @@ for i in range(samples):
     h = round(sense.get_humidity(),1)                               #humidity
     tcpu = cpu_temp()
     t = round((t-(tcpu-t)),1)
+    #determine color for progress display
+    if t <= 15:
+        tcolor = v
+    elif (t>15) and (t<=21):
+        tcolor = g
+    else:
+        tcolor = r
     #create the log line for the file
     t = str(t)
     p = str(p)
     h = str(h)
     logline = timestamp+","+t+","+p+","+h+"\n"
     progress = int((i/float(samples)*10))
-    sense.show_letter(str(progress))
+    sense.show_letter(str(progress), text_colour=tcolor)
     sensefile.write(logline)
     time.sleep(rate)
 
