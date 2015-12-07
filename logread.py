@@ -155,3 +155,20 @@ print ("Minimum", repr(tmin).rjust(6), "/", repr(tminf), repr(pmin).rjust(8), "/
 print ("------------------------------------------------") 
 print ("Altitude:", altitude) 
 print ("\n") 
+
+
+#plot results (temperature)
+import numpy as np
+import matplotlib.pyplot as plt
+
+#extract from the file temperature (col 1) and pressure (Col 2) as an array
+logfile = np.loadtxt(name, delimiter=",", usecols=(1,2))
+tplot = logfile[1:,0]   #extract temperature from the arrah
+del logfile             #delete logfile array 
+#set plot parameters
+plt.xlabel("Samples")
+plt.ylabel("Degrees Celsius")
+plt.title("Temperature")
+#display the temperature chart
+plt.plot(tplot, "-b")
+plt.show()
