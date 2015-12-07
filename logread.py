@@ -77,7 +77,7 @@ name = input("file name:")                  #get the file to analyze
 #Check if the log file already exists 
 if not(os.path.isfile(name)): 
     print ("Files does not exist... cancelling.") 
-    exit(0) 
+    exit() 
 
 
 dump = input("Log file screen dump [y/n]:") 
