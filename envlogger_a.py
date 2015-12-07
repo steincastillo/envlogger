@@ -38,8 +38,8 @@ if os.path.isfile("sensefile.dat"):
     exit(0)
 
 #set the samples and sampling rate
-rate = 1              #sample frecuency in seconds
-samples = 10          #number of samples
+rate = 120            #sample frecuency in seconds
+samples = 270           #number of samples
 stabilization = False
 
 #initialization read from the sensor. This is neccesary since sometimes the sensors return
