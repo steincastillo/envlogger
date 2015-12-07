@@ -1,6 +1,6 @@
 #analyse files created with the envlogger program 
 #Program: logread.py 
-#Version 1.5 
+#Version 1.7 
 #Author: Stein Castillo 
 #Date: Nov 30 2015 
 #---------------------- 
@@ -8,7 +8,7 @@
 import os 
 #os.chdir("/home/pi/stein/projects/python")  #set the working directory 
  
- #this function is used to convert temperature readings Celsius<->Farenheit 
+#this function is used to convert temperature readings Celsius<->Farenheit 
 def tconv (celsius=0, farenheit=0): 
      if farenheit == 0: 
          conv = (celsius*1.8)+32 
@@ -18,7 +18,7 @@ def tconv (celsius=0, farenheit=0):
          conv = 0 
      return (conv) 
  
- #this function is used to convert preasure readings milibars(mb)<->Kilopascal(KPa) 
+#this function is used to convert preasure readings milibars(mb)<->Kilopascal(KPa) 
 def pconv (mb = 0, kpa = 0): 
      if mb == 0: 
          conv = kpa * 10 
@@ -68,7 +68,7 @@ print("\n")
 print("*****************************************") 
 print("*   Environment Log File Analyzer       *") 
 print("*                                       *") 
-print("*           Version: 1.5                *") 
+print("*           Version: 1.7                *") 
 print("*****************************************") 
 print("\n") 
 
