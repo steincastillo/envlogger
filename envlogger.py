@@ -88,7 +88,9 @@ samples = int(input("Enter number of samples:"))
 t = round(sense.get_temperature_from_humidity(),1)            
 p = round(sense.get_pressure(),1)                              
 h = round(sense.get_humidity(),1)
+sense.show_letter("W")
 time.sleep(5)
+sense.clear()
 
 
 #these variables will be used to calculate the averages/max/min at the end of the sampling
