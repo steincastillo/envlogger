@@ -1,11 +1,12 @@
 #analyse files created with the envlogger program
 #Program: logread.py
-#Version 1.5
+#Version 1.7
 #Author: Stein Castillo
 #Date: Nov 30 2015
 #----------------------
 
 import os
+
 #os.chdir("/home/pi/stein/projects/python")  #set the working directory
 
 #this function is used to convert temperature readings Celsius<->Farenheit
@@ -68,10 +69,9 @@ print("\n")
 print("*****************************************")
 print("*   Environment Log File Analyzer       *")
 print("*                                       *")
-print("*           Version: 1.5                *")
+print("*           Version: 1.7                *")
 print("*****************************************")
 print("\n")
-
 
 name = input("file name:")                  #get the file to analyze
 
@@ -82,8 +82,6 @@ if not(os.path.isfile(name)):
 
 dump = input("Log file screen dump [y/n]:")
 dump = str.capitalize(dump)
-
-
 
 #open log file, read only
 logfile = open(name, "r")
@@ -140,7 +138,6 @@ pmink = round(pconv(mb=pmin), 1)
 altitude = round(computeHeight(pavg), 1)
 
 
-
 #print results
 print ("\n")
 print ("------------------------------------------------")
@@ -160,6 +157,13 @@ print ("------------------------------------------------")
 print ("Altitude:", altitude)
 print ("\n")
 
-
-
+#graph the results (temperature)
+import numpy as np
+import matplotlib.pyplot as plt
+logfile = np.loadtxt(name, delimiter=",", usecols=(1,2))
+tplot = (logfile[1:,0])
+plt.title("Temperature")
+plt.xlabel("Sample")
+plt.ylabel("Degrees Celsius")
+plt.plot(tplot, "-b")
 
