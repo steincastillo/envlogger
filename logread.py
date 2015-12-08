@@ -165,10 +165,14 @@ import matplotlib.pyplot as plt
 logfile = np.loadtxt(name, delimiter=",", usecols=(1,2))
 tplot = logfile[1:,0]   #extract temperature from the arrah
 del logfile             #delete logfile array 
+#calculate trend line
+xvalues = np.array(range(tplot.shape[0]))
+t1 = np.polyfit(xvalues, tplot, 1)
+trend = np.poly1d(t1)
 #set plot parameters
 plt.xlabel("Samples")
 plt.ylabel("Degrees Celsius")
 plt.title("Temperature")
 #display the temperature chart
-plt.plot(tplot, "-b")
+plt.plot(xvalues, tplot, "b-", xvalues, trend(xvalues), "r--")
 plt.show()
