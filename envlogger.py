@@ -1,6 +1,6 @@
 #Environment variables logger
 #Program: envlogger.py
-#Version 2.5
+#Version 2.6
 #Author: Stein Castillo
 #Date: Nov 22 2015
 
@@ -67,18 +67,33 @@ print("\n")
 print("*****************************************")
 print("*   Environment Variables Logger        *")
 print("*                                       *")
-print("*           Version: 2.5                *")
+print("*           Version: 2.6                *")
 print("*****************************************")
 print("\n")
 
 #Check if the log file already exists
-if os.path.isfile("sensefile.dat"):
-    rewrite = get_input("Logging file already exists! Replace [Y/N]:", ["y", "Y", "n", "N"])
-    if str.capitalize(rewrite) == "N":
-        print("Cancelling...\n")
+filename = "sensefile.dat"
+if os.path.isfile(filename):
+    rewrite = get_input("Logging file already exists! [R]eplace old, [C]reate new or [Q]uit [R/C/Q]:", ["r", "R", "c", "C", "q", "Q"])
+    if str.capitalize(rewrite) == "Q":
+        print("Quiting...\n")
         sense.clear()
         exit(0)
-
+    elif str.capitalize(rewrite) == "C":
+        senselist = os.popen("ls -l sense*")
+        filecount = 0
+        while True:
+            line = senselist.readline()
+            if line == "":
+                break
+            filecount += 1
+        filename = "sensefile"+str(filecount)+".dat"
+        print ("Creating new file:", filename)
+    elif str.capitalize(rewrite) == "R":
+        print ("Replacing sensefile.dat")
+        os.popen("rm sensefile.dat")
+        
+        
 #get number of samples and sampling rate from the user
 rate = int(input("Enter sample fecuency in seconds:"))
 samples = int(input("Enter number of samples:"))
@@ -104,7 +119,7 @@ tmin = round(sense.get_temperature_from_humidity(),1)
 pmin = round(sense.get_pressure(),1)
 hmin = round(sense.get_humidity(),1)
 
-sensefile = open("sensefile.dat", "w")  #open the sampling file
+sensefile = open(filename, "w")  #open the sampling file
 
 #write the header line in the logging file
 timestamp = time.asctime(time.localtime(time.time()))           #timestamp

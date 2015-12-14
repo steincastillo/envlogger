@@ -39,8 +39,8 @@ if os.path.isfile("sensefile.dat"):
 
 #set the samples and sampling rate
 rate = 60            #sample frecuency in seconds
-samples = 180           #number of samples
-stabilization = False
+samples = 420           #number of samples
+stabilization = True
 
 #initialization read from the sensor. This is neccesary since sometimes the sensors return
 #a 0 value for pressure on the first read
