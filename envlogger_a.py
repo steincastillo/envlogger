@@ -10,6 +10,8 @@
 import time
 import os
 import os.path
+import smtplib
+email = smtplib.SMTP("smtp.gmail.com", 587)
 from sense_hat import SenseHat
 sense = SenseHat()
 
@@ -32,15 +34,32 @@ def cpu_temp():
     cputemp = float(cputemp)
     return cputemp
 
+#This functions sends an emai. It is used to notify the user that the sampling process is complete    
+def sendemail(toAdd, subject, body):
+    fromAdd = smtpUser
+    header = "To: " + toAdd + "\n" + "From: " + fromAdd + "\n" + "Subject: " + subject
+
+    email.ehlo()
+    email.starttls()
+    email.ehlo()
+    email.login(smtpUser, smtpPass)
+    email.sendmail(fromAdd, toAdd, header + "\n\n" + body)
+    email.quit()
+    return()
+
 #Check if the log file already exists
 if os.path.isfile("sensefile.dat"):
     sense.show_message("Cancelling")
     exit(0)
 
-#set the samples and sampling rate
-rate = 60            #sample frecuency in seconds
-samples = 60           #number of samples
+#set the sampling parameters
+rate = 2            #sample frecuency in seconds
+samples = 10           #number of samples
 stabilization = False
+report = True               #send email at the end of the process?
+smtpUser = "email"  #email account
+smtpPass = "pasword"                       #email password
+mailrecipient = "recipien"
 
 #initialization read from the sensor. This is neccesary since sometimes the sensors return
 #a 0 value for pressure on the first read
@@ -93,6 +112,15 @@ for i in range(samples):
 
 sensefile.flush()       #commit data to the file
 sensefile.close()       #close the sampling file
+
+#send email to nofity process completing
+if report:   
+    timestamp = time.asctime(time.localtime(time.time()))
+    mailsubject= "Sampling process completed!"
+    mailbody = "Envlogger process successfully completed at " + timestamp + "\n\n" + \
+               "A total of " + str(samples) + " samples were taken with a frecuency of " + \
+               str(rate) + " seconds"
+    sendemail(mailrecipient, mailsubject, mailbody)
 
 sense.show_message("Finished")
 sense.clear()           #clear SensorHat led display

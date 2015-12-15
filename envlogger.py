@@ -5,13 +5,15 @@
 #Date: Nov 22 2015
 
 #this program reads the environment variables: temperature, pressure and humidity
-#the results will be logged to the sensefile.dat file
+#the results are logged to the sensefile.dat file.
 #on the screen, the program will show the logged values
 #at the end, average, maximum and minimum values will presented on the screen
 
 import time
 import os
 import os.path
+import smtplib
+email = smtplib.SMTP("smtp.gmail.com", 587)
 from sense_hat import SenseHat
 sense = SenseHat()
 
@@ -62,7 +64,25 @@ def pconv (mb = 0, kpa = 0):
     else:
         conv = 0
     return (conv)
-    
+
+#This functions sens an emai. It is used to notify the user that the sampling process is complete    
+def sendemail(toAdd, subject, body):
+    smtpUser = "email"
+    smtpPass = "password"
+    fromAdd = smtpUser
+    header = "To: " + toAdd + "\n" + "From: " + fromAdd + "\n" + "Subject: " + subject
+
+    email.ehlo()
+    email.starttls()
+    email.ehlo()
+    email.login(smtpUser, smtpPass)
+    email.sendmail(fromAdd, toAdd, header + "\n\n" + body)
+    email.quit()
+    return()
+
+
+
+
 print("\n")
 print("*****************************************")
 print("*   Environment Variables Logger        *")
@@ -206,6 +226,16 @@ print ("\n")
 ##print (repr(maxt).rjust(15), repr(maxp).rjust(10), repr(maxh).rjust(7))
 ##print ("----------------Minimum:---------------------")
 ##print (repr(mint).rjust(15), repr(minp).rjust(10), repr(minh).rjust(7))
+
+
+#send email to nofity process completing
+timestamp = time.asctime(time.localtime(time.time()))
+mailrecipient = "recipient"
+mailsubject = "Sampling process completed!"
+mailbody = "Envlogger process successfully completed at " + timestamp + "\n\n" + \
+           "A total of " + str(samples) + " samples were taken with a frecuency of " + \
+           str(rate) + " seconds"
+sendemail(mailrecipient, mailsubject, mailbody)
 
 
 print ("Finished")
