@@ -13,7 +13,6 @@ import time
 import os
 import os.path
 import smtplib
-email = smtplib.SMTP("smtp.gmail.com", 587)
 from sense_hat import SenseHat
 sense = SenseHat()
 
@@ -67,8 +66,8 @@ def pconv (mb = 0, kpa = 0):
 
 #This functions sens an emai. It is used to notify the user that the sampling process is complete    
 def sendemail(toAdd, subject, body):
-    smtpUser = "email"
-    smtpPass = "password"
+    smtpUser = "email user"
+    smtpPass = "email password"
     fromAdd = smtpUser
     header = "To: " + toAdd + "\n" + "From: " + fromAdd + "\n" + "Subject: " + subject
 
@@ -229,6 +228,7 @@ print ("\n")
 
 
 #send email to nofity process completing
+email = smtplib.SMTP("smtp.gmail.com", 587)
 timestamp = time.asctime(time.localtime(time.time()))
 mailrecipient = "recipient"
 mailsubject = "Sampling process completed!"

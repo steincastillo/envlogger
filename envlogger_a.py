@@ -11,7 +11,7 @@ import time
 import os
 import os.path
 import smtplib
-email = smtplib.SMTP("smtp.gmail.com", 587)
+
 from sense_hat import SenseHat
 sense = SenseHat()
 
@@ -52,14 +52,20 @@ if os.path.isfile("sensefile.dat"):
     sense.show_message("Cancelling")
     exit(0)
 
-#set the sampling parameters
-rate = 2            #sample frecuency in seconds
-samples = 10           #number of samples
-stabilization = False
+#*********************************************
+#*
+#* set the sampling parameters
+#*
+#*********************************************
+
+rate = 60               #sample frecuency in seconds
+samples = 900           #number of samples
+stabilization = True    #Allow for termometer to stabilize
 report = True               #send email at the end of the process?
-smtpUser = "email"  #email account
-smtpPass = "pasword"                       #email password
-mailrecipient = "recipien"
+smtpUser = "email user"  #email account
+smtpPass = "email password"                       #email password
+fromAdd = smtpUser
+toAdd = "recipient"         #completion email recipient
 
 #initialization read from the sensor. This is neccesary since sometimes the sensors return
 #a 0 value for pressure on the first read
@@ -70,10 +76,10 @@ sense.show_letter("W")
 time.sleep(5)
 sense.clear()
 
-#stabilize temperature readings by waiting 5 min
+#stabilize temperature readings by waiting 7 min
 if stabilization:
     sense.show_letter("W")
-    time.sleep(300)
+    time.sleep(420)
     sense.clear()
     
 #open the sampling file
@@ -114,13 +120,21 @@ sensefile.flush()       #commit data to the file
 sensefile.close()       #close the sampling file
 
 #send email to nofity process completing
-if report:   
+if report:
+    email = smtplib.SMTP("smtp.gmail.com", 587)
     timestamp = time.asctime(time.localtime(time.time()))
     mailsubject= "Sampling process completed!"
     mailbody = "Envlogger process successfully completed at " + timestamp + "\n\n" + \
                "A total of " + str(samples) + " samples were taken with a frecuency of " + \
                str(rate) + " seconds"
-    sendemail(mailrecipient, mailsubject, mailbody)
+    header = "To: " + toAdd + "\n" + "From: " + fromAdd + "\n" + "Subject: " + mailsubject
+
+    email.ehlo()
+    email.starttls()
+    email.ehlo()
+    email.login(smtpUser, smtpPass)
+    email.sendmail(fromAdd, toAdd, header + "\n\n" + mailbody)
+    email.quit()
 
 sense.show_message("Finished")
 sense.clear()           #clear SensorHat led display
